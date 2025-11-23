@@ -1,14 +1,82 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
 
-// Uma Localização tem Latitude e Longitude armazenadas em decimal
-// A Latitude deve estar entre -90 e 90
-// A Longitude deve estar entre -180 e 180
+namespace AvaTipos
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var localizacao = new Localizacao { Latitude = 0m, Longitude = 0m };
 
-// Criar métodos/funções que movem uma Localização para Norte, Sul, Leste e Oeste
-// Cada movimento deve receber um parâmetro decimal que indica a distância a ser movida
-// Ex: Mover Norte 10.5 aumenta a Latitude em 10.5
-// Se a Latitude ou Longitude ultrapassar os limites, deve girar para o lado oposto
-// Ex: Se a Latitude for 95, deve ser ajustada para -85
+            Console.WriteLine("=== Sistema de Navegação ===");
+            Console.WriteLine($"Localização inicial: {localizacao}");
+            Console.WriteLine("\nComandos disponíveis:");
+            Console.WriteLine("  norte <distancia>  - Mover para norte");
+            Console.WriteLine("  sul <distancia>    - Mover para sul");
+            Console.WriteLine("  leste <distancia>  - Mover para leste");
+            Console.WriteLine("  oeste <distancia>  - Mover para oeste");
+            Console.WriteLine("  sair               - Sair do programa");
+            Console.WriteLine();
 
-// Implementar várias versões dessas funções, considerando o uso de classe (ou record class), uso de struct (ou record struct), com e sem return, passando por cópia e por referência.
+            while (true)
+            {
+                Console.Write("> ");
+                string? entrada = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(entrada))
+                    continue;
+
+                localizacao = ProcessarComando(entrada, localizacao);
+            }
+        }
+
+      static Localizacao ProcessarComando(string entrada, Localizacao atual)
+        {
+            var partes = entrada.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (partes.Length < 1)
+                return atual;
+
+            string comando = partes[0].ToLower();
+            decimal distancia = 0;
+
+            // Comando de sair fora do switch
+            if (comando == "sair")
+            {
+                Console.WriteLine("Até logo!");
+                Environment.Exit(0);
+            }
+
+            // Tentar extrair a distância
+            if (partes.Length > 1 && !decimal.TryParse(partes[1], out distancia))
+            {
+                Console.WriteLine("❌ Distância inválida. Use um número decimal.");
+                return atual;
+            }
+
+            Localizacao nova;
+
+            switch (comando)
+            {
+                case "norte":
+                    nova = Movimentos.MoverNorte(atual, distancia);
+                    break;
+                case "sul":
+                    nova = Movimentos.MoverSul(atual, distancia);
+                    break;
+                case "leste":
+                    nova = Movimentos.MoverLeste(atual, distancia);
+                    break;
+                case "oeste":
+                    nova = Movimentos.MoverOeste(atual, distancia);
+                    break;
+                default:
+                    Console.WriteLine("❌ Comando desconhecido.");
+                    return atual;
+            }
+
+            Console.WriteLine($"✓ Localização: {nova}");
+            return nova;
+        }
+    }
+}
