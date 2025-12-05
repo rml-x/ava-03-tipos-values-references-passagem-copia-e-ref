@@ -19,7 +19,7 @@ class Program
         while (true)
         {
             Console.Write("> ");
-            string entrada = Console.ReadLine();
+            string entrada = Console.ReadLine()!;
 
             if (string.IsNullOrWhiteSpace(entrada))
                 continue;
@@ -50,29 +50,29 @@ class Program
             return atual;
         }
 
-        Localizacao nova;
+    
 
         switch (comando)
         {
             case "norte":
-                nova = Movimentos.MoverNorte(atual, distancia);
+                Movimentos.MoverNorte(ref atual, distancia);
                 break;
             case "sul":
-                nova = Movimentos.MoverSul(atual, distancia);
+                Movimentos.MoverSul(ref atual, distancia);
                 break;
             case "leste":
-                nova = Movimentos.MoverLeste(atual, distancia);
+                Movimentos.MoverLeste(ref atual, distancia);
                 break;
             case "oeste":
-                nova = Movimentos.MoverOeste(atual, distancia);
+                Movimentos.MoverOeste(ref atual, distancia);
                 break;
             default:
                 Console.WriteLine("Comando desconhecido.");
                 return atual;
         }
 
-        Console.WriteLine($"Localização: {nova}");
-        return nova;
+        Console.WriteLine($"Localização: {atual}");
+        return atual;
     }
 }
 

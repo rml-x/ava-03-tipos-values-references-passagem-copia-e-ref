@@ -1,94 +1,78 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-public struct Localizacao 
+public record struct Localizacao 
 { 
     public decimal Latitude;
     public decimal Longitude;
     
-    public override string ToString()
-    {
-        return $"Lat: {Latitude}, Lon: {Longitude}";
-    }
+
 }
 
 public static class Movimentos
 {
-    public static Localizacao MoverNorte(Localizacao atual, decimal distancia)
+    public static void MoverNorte(ref Localizacao atual, decimal distancia)
     {
-        Localizacao nova = new Localizacao();
+        
+        atual.Latitude = atual.Latitude + distancia;
 
-        nova.Latitude = atual.Latitude + distancia;
-        nova.Longitude = atual.Longitude;
-
-        if (nova.Latitude > 90)
+        if (atual.Latitude > 90)
         {
-            nova.Latitude = nova.Latitude - 180;
+            atual.Latitude = atual.Latitude - 180;
         }
-        if (nova.Latitude < -90)
+        if (atual.Latitude < -90)
         {
-            nova.Latitude = nova.Latitude + 180;
+            atual.Latitude = atual.Latitude + 180;
         }
  
-        return nova;
     }
 
-    public static Localizacao MoverSul(Localizacao atual, decimal distancia)
+    public static void MoverSul(ref Localizacao atual, decimal distancia)
     {
-        Localizacao nova = new Localizacao();
-
-        nova.Latitude = atual.Latitude - distancia;
-        nova.Longitude = atual.Longitude;
-
-        if (nova.Latitude > 90)
-        {
-            nova.Latitude = nova.Latitude - 180;
-        }
-        if (nova.Latitude < -90)
-        {
-            nova.Latitude = nova.Latitude + 180;
-        }
-
-        return nova;
-    }
-
-     public static Localizacao MoverLeste(Localizacao atual, decimal distancia)
-    {
-        Localizacao nova = new Localizacao();
-
-        nova.Latitude = atual.Latitude;
-        nova.Longitude = atual.Longitude + distancia;
-
-        if (nova.Longitude > 180)
-        {
-            nova.Longitude = nova.Longitude - 360;
-        }
-        if (nova.Longitude < -180)
-        {
-            nova.Longitude = nova.Longitude + 360;
-        }
         
+        atual.Latitude = atual.Latitude - distancia;
 
-        return nova;
+        if (atual.Latitude > 90)
+        {
+            atual.Latitude = atual.Latitude - 180;
+        }
+        if (atual.Latitude < -90)
+        {
+            atual.Latitude = atual.Latitude + 180;
+        }
+
     }
 
-     public static Localizacao MoverOeste(Localizacao atual, decimal distancia)
+     public static void MoverLeste(ref Localizacao atual, decimal distancia)
     {
-        Localizacao nova = new Localizacao();
+       
+        atual.Longitude = atual.Longitude + distancia;
 
-        nova.Latitude = atual.Latitude;
-        nova.Longitude = atual.Longitude - distancia;
+        if (atual.Longitude > 180)
+        {
+            atual.Longitude = atual.Longitude - 360;
+        }
+        if (atual.Longitude < -180)
+        {
+            atual.Longitude = atual.Longitude + 360;
+        }
+    
+    }
+
+     public static void MoverOeste(ref Localizacao atual, decimal distancia)
+    {
+        
+        atual.Longitude = atual.Longitude - distancia;
 
         
-        if (nova.Longitude > 180)
+        if (atual.Longitude > 180)
         {
-            nova.Longitude = nova.Longitude - 360;
+            atual.Longitude = atual.Longitude - 360;
         }
-        if (nova.Longitude < -180)
+        if (atual.Longitude < -180)
         {
-            nova.Longitude = nova.Longitude + 360;
+            atual.Longitude = atual.Longitude + 360;
         }
 
-        return nova;
     }
 }
 
